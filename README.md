@@ -9,7 +9,8 @@ notes on how it all fits together and every command I actually used, so I don't 
 relearn this next time.
 
 Right now it connects to WiFi through a setup portal, pulls the now-playing track from
-Spotify, and draws the album cover on the LED panel.
+Spotify, and shows it as a spinning record on the LED panel with the album cover as the
+label in the middle.
 
 ## Hardware
 
@@ -53,7 +54,9 @@ all go on the top row and the control wires on the bottom row.
 
 ```
 platformio.ini            board, port, libraries, and the two build targets
-src/main.cpp              the real firmware (target "esp32dev")
+src/main.cpp              the real firmware (target "esp32dev"): wifi, spotify, cover download
+src/vinyl.cpp             draws the record: grooves, shine, the cover label, the corner signature
+include/vinyl.h           what main.cpp can ask vinyl.cpp to do
 src/panel_test.cpp        panel wiring test, colours + border + pixel sweep (target "paneltest")
 include/panel_pins.h      which ESP32 pin goes to which panel pin
 include/secrets.h         spotify client id. gitignored
@@ -134,8 +137,23 @@ This is the part that confused me, so writing it down:
 5. Spotify link page + PKCE. Dropped the Client Secret, the refresh token moved from the
    code into flash, and it's set through the portal using the code from the link page.
 6. LED panel. Wired it, proved the wiring with the panel test, then the main firmware
-   started drawing Spotify's 64px album cover. The panel also shows "Connecting",
+   started drawing the album cover. The panel also shows "Connecting",
    "Join WiFi Vinyl-Setup", and "Spotify not linked" so she's never staring at a black square.
+7. The record look. Black vinyl with grooves and a light reflection that stays put, the
+   cover as an upright 41px label in the middle, and two faint light streaks that sweep
+   around the grooves at 8 RPM so you can tell it's spinning. It spins up when you hit
+   play and coasts to a stop when you pause, like a turntable. The drawing runs on the
+   ESP32's second core, so checking Spotify every 5 seconds never makes it stutter.
+8. The personal bit. A tiny heart and "z" in the top right corner (the one spot the
+   record doesn't cover), and "made with love, - z" for 4 seconds every time it powers on.
+
+### Tweaking the look
+
+Everything is at the top of `src/vinyl.cpp`: `VINYL_BASE` and `GROOVE_DEPTH` for the
+vinyl, `SHINE` for the reflection, `STREAK` and `STREAK_WIDTH` for the moving light,
+`RPM` for spin speed, `SHARPEN` for how crisp the cover text is. Overall brightness is
+`BRIGHTNESS` at the top of `src/main.cpp`. The startup message is the `showMessage` line
+in `setup()`, and the corner heart and z are drawn as little `#`/`.` grids in `vinyl.cpp`.
 
 ## Stuff that tripped me up
 
@@ -157,6 +175,16 @@ Notes so future me doesn't waste time on the same things:
   multimeter, no beep). It's D, and a 64x64 panel needs it.
 - TX2 and RX2 on the ESP32 are GPIO 17 and 16. The board labels them by their serial
   name, not the number, so they're easy to mix up.
+- Spotify's 64px album art is way too compressed, the text on covers turns to mush. Using
+  the 300px one and shrinking it on the board (averaging blocks of pixels, then a bit of
+  sharpening) made a huge difference.
+- Rotating text at this size is unreadable, each letter stroke is 1-2 LEDs and lands
+  between pixels at an angle. That's why the label stays upright and the grooves show the spin.
+- The panel library already does brightness correction on every colour (CIE1931). I added
+  my own gamma on top for a while and it crushed the cover's colours. Only the vinyl gets
+  the extra darkening now so it reads as black.
+- Phone photos of the panel in a dark room lie. The camera overexposes it and everything
+  looks way brighter and bluer than it is in person.
 - The ESP32 is too wide for a normal breadboard. It either covers every hole or the pins
   land in the power rail, which shorts them all together. Jumpers straight onto the pins.
 
@@ -169,6 +197,7 @@ Client ID.
 
 ## What's left
 
-- Spinning vinyl look around the album art.
+- Power the ESP32 from the brick too (brick + to VIN, - to GND), so it runs without the Mac.
+- Get her to link her Spotify (send her the link page) and paste her code in through the portal.
 - Solder the jumpers so nothing rattles loose in shipping.
 - Print the enclosure and hide the back so all she deals with is power and WiFi.

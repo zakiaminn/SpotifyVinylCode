@@ -9,6 +9,7 @@
 #include <Preferences.h>
 #include "secrets.h"
 #include "panel_pins.h"
+#include "vinyl.h"
 
 #define LED_PIN 2
 #define BOOT_BTN 0                // onboard BOOT button (GPIO0)
@@ -47,11 +48,13 @@ void startPanel() {
 }
 
 // up to 3 short centred lines of text. 64px fits 10 characters per line
-void showMessage(const char *l1, const char *l2 = "", const char *l3 = "") {
+void showMessage(const char *l1, const char *l2 = "", const char *l3 = "",
+                 uint8_t r = 150, uint8_t g = 150, uint8_t b = 150) {
+  vinylStop();
   panel->clearScreen();
   panel->setTextSize(1);
   panel->setTextWrap(false);
-  panel->setTextColor(panel->color565(150, 150, 150));
+  panel->setTextColor(panel->color565(r, g, b));
   const char *lines[] = {l1, l2, l3};
   for (int i = 0; i < 3; i++) {
     panel->setCursor((PANEL_SIZE - (int)strlen(lines[i]) * 6) / 2, 18 + i * 10);
@@ -60,9 +63,9 @@ void showMessage(const char *l1, const char *l2 = "", const char *l3 = "") {
   shownArtUrl = "";               // art needs redrawing after this
 }
 
-// TJpg_Decoder hands us the image in small blocks
+// TJpg_Decoder hands us the image in small blocks, the vinyl renderer shrinks them
 bool drawJpgBlock(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t *bitmap) {
-  panel->drawRGBBitmap(x, y, bitmap, w, h);
+  vinylCoverBlock(x, y, w, h, bitmap);
   return true;
 }
 
@@ -106,15 +109,16 @@ void showArt(const String &url) {
 
   uint16_t w = 0, h = 0;
   TJpgDec.getJpgSize(&w, &h, jpg, len);
-  uint8_t scale = 1;              // shrink bigger images to fit (decoder does 1/2/4/8)
-  while (w / scale > PANEL_SIZE && scale < 8) scale *= 2;
+  uint8_t scale = 1;              // decoder can pre-shrink 1/2/4/8, keeps a 640px cover quick
+  while (w / scale > 320 && scale < 8) scale *= 2;
   TJpgDec.setJpgScale(scale);
+  if (!vinylCoverStart(w / scale, h / scale)) { Serial.println("art: out of memory"); free(jpg); return; }
 
-  panel->clearScreen();
-  TJpgDec.drawJpg((PANEL_SIZE - w / scale) / 2, (PANEL_SIZE - h / scale) / 2, jpg, len);
+  TJpgDec.drawJpg(0, 0, jpg, len);
   free(jpg);
+  vinylCoverDone();               // becomes the record's centre label
   shownArtUrl = url;
-  Serial.printf("art: drew %dx%d (1/%d), free heap %u\n", w, h, scale, ESP.getFreeHeap());
+  Serial.printf("art: loaded %dx%d (1/%d), free heap %u\n", w, h, scale, ESP.getFreeHeap());
 }
 
 void saveRefreshToken(const String &token) {
@@ -241,21 +245,25 @@ void pollNowPlaying() {
     const char *album  = doc["item"]["album"]["name"] | "(unknown)";
     bool playing       = doc["is_playing"] | false;
 
-    // Spotify gives 640/300/64px versions - pick the smallest
+    // Spotify gives 640/300/64px versions. the 64px one is too compressed for the text
+    // to survive, so take the smallest that's at least 150px (the 300) and shrink it here
     const char *art = "";
-    int smallest = INT_MAX;
+    int best = 0;
     for (JsonObject img : doc["item"]["album"]["images"].as<JsonArray>()) {
-      int h = img["height"] | INT_MAX - 1;
-      if (h < smallest) { smallest = h; art = img["url"] | ""; }
+      int h = img["height"] | 0;
+      bool better = best == 0 || (h >= 150 && (best < 150 || h < best)) || (best < 150 && h > best);
+      if (better) { best = h; art = img["url"] | ""; }
     }
     pendingArtUrl = art;
     digitalWrite(LED_PIN, playing ? HIGH : LOW);
+    vinylSetPlaying(playing);
     Serial.println("╭──────── NOW PLAYING ────────");
     Serial.printf ("│ %s\n│ by %s\n│ album: %s  [%s]\n│ art: %s\n",
                    track, artist, album, playing ? "playing" : "paused", art);
     Serial.println("╰─────────────────────────────");
   } else if (code == 204) {
     digitalWrite(LED_PIN, LOW);
+    vinylSetPlaying(false);
     Serial.println("Nothing playing — open Spotify and press play.");
     pendingArtUrl = "";
   } else if (code == 401) {
@@ -273,11 +281,14 @@ void setup() {
   delay(1000);
   Serial.println("\n=== Spotify Vinyl — display build ===");
   startPanel();                   // before WiFi, so its DMA buffers get memory first
+  vinylBegin(panel);
   TJpgDec.setCallback(drawJpgBlock);
   prefs.begin("spotify", false);
   refreshToken = prefs.getString("refresh", "");
   Serial.printf("spotify: %s\n", refreshToken.length() ? "link code loaded from flash" : "not linked yet");
   Serial.printf("panel: up, free heap %u\n", ESP.getFreeHeap());
+  showMessage("made with", "love,", "- z", 230, 90, 110);   // shown every power-up
+  delay(4000);
   startWiFi();
 }
 
@@ -302,7 +313,7 @@ void loop() {
     pollNowPlaying();
     // fetch art after the poll's connection is closed, so only one TLS session is open
     if (pendingArtUrl != shownArtUrl) {
-      if (pendingArtUrl == "") { panel->clearScreen(); shownArtUrl = ""; }
+      if (pendingArtUrl == "") { vinylStop(); panel->clearScreen(); shownArtUrl = ""; }
       else showArt(pendingArtUrl);
     }
   }
