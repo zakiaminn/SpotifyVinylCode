@@ -1,0 +1,743 @@
+{
+ "checks": [
+  {
+   "name": "01_fit_test_ring: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "01_fit_test_ring: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[207.6, 207.6, 3.6] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "01_fit_test_ring: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "01_fit_test_ring: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "02_fit_test_corner: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "02_fit_test_corner: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[32.0, 32.0, 21.6] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "02_fit_test_corner: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "02_fit_test_corner: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "03_frame: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "03_frame: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[207.6, 207.6, 49.6] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "03_frame: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "03_frame: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "04_back_cover: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "04_back_cover: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[207.6, 207.6, 4.4] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "04_back_cover: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "04_back_cover: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "05_tabs_and_shims_plate: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "05_tabs_and_shims_plate: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[71.5, 128.5, 3.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "05_tabs_and_shims_plate: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "05_tabs_and_shims_plate: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "06_electronics_rail: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "06_electronics_rail: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[203.8, 55.9, 3.4] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "06_electronics_rail: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "06_electronics_rail: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "07_desk_foot_print_2: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "07_desk_foot_print_2: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[101.08, 22.61, 22.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "07_desk_foot_print_2: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "07_desk_foot_print_2: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/corner_tab: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/corner_tab: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 3.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/corner_tab: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/corner_tab: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_0.4mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_0.4mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 0.4] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_0.4mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_0.4mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_0.6mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_0.6mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 0.6] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_0.6mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_0.6mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_0.8mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_0.8mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 0.8] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_0.8mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_0.8mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_1.0mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_1.0mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 1.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_1.0mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_1.0mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_2.0mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_2.0mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 2.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_2.0mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_2.0mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "singles/shim_3.0mm: valid solid",
+   "ok": true,
+   "detail": "Error.NoError"
+  },
+  {
+   "name": "singles/shim_3.0mm: fits MK3 bed with 1 mm margin each side",
+   "ok": true,
+   "detail": "[14.5, 14.5, 3.0] vs bed [250.0, 210.0, 210.0]"
+  },
+  {
+   "name": "singles/shim_3.0mm: prints without supports",
+   "ok": true,
+   "detail": "0.00 mm2 of steep overhang"
+  },
+  {
+   "name": "singles/shim_3.0mm: sits flat on the bed",
+   "ok": true,
+   "detail": "min z = 0.0000"
+  },
+  {
+   "name": "03_frame: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "04_back_cover: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "06_electronics_rail: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "07_desk_foot_print_2: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "01_fit_test_ring: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "02_fit_test_corner: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "singles/corner_tab: single connected body",
+   "ok": true,
+   "detail": "1 bodies"
+  },
+  {
+   "name": "outer size",
+   "ok": true,
+   "detail": "207.60 x 207.60 mm"
+  },
+  {
+   "name": "lip opening",
+   "ok": true,
+   "detail": "190.40 mm (panel 192.0)"
+  },
+  {
+   "name": "pocket width",
+   "ok": true,
+   "detail": "192.80 mm"
+  },
+  {
+   "name": "lip does not hide more than 1 mm of panel edge",
+   "ok": true,
+   "detail": "0.80 mm per side if centred"
+  },
+  {
+   "name": "pocket shallower than thinnest plausible panel (13 mm)",
+   "ok": true,
+   "detail": "12.0 mm"
+  },
+  {
+   "name": "panel insertion path clear (offset +0.00,+0.00)",
+   "ok": true,
+   "detail": "overlap 0.0000 mm3"
+  },
+  {
+   "name": "panel insertion path clear (offset +0.35,+0.35)",
+   "ok": true,
+   "detail": "overlap 0.0000 mm3"
+  },
+  {
+   "name": "panel insertion path clear (offset -0.35,+0.35)",
+   "ok": true,
+   "detail": "overlap 0.0000 mm3"
+  },
+  {
+   "name": "front lip actually retains the panel",
+   "ok": true,
+   "detail": "735 mm3 of lip in front of the panel"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 13.0 mm)",
+   "ok": true,
+   "detail": "panel stands 1.0 mm proud, shims (0.8,), min gap 0.30 mm, screw about M3x12"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 13.0 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 14.0 mm)",
+   "ok": true,
+   "detail": "panel stands 2.0 mm proud, shims (0.8, 1.0), min gap 0.30 mm, screw about M3x12"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 14.0 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 14.5 mm)",
+   "ok": true,
+   "detail": "panel stands 2.5 mm proud, shims (0.4, 2.0), min gap 0.30 mm, screw about M3x14"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 14.5 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 15.0 mm)",
+   "ok": true,
+   "detail": "panel stands 3.0 mm proud, shims (0.8, 2.0), min gap 0.30 mm, screw about M3x14"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 15.0 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 18.0 mm)",
+   "ok": true,
+   "detail": "panel stands 6.0 mm proud, shims (0.8, 2.0, 3.0), min gap 0.30 mm, screw about M3x16"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 18.0 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "tabs/shims/screw heads clear the frame (panel 22.0 mm)",
+   "ok": true,
+   "detail": "panel stands 10.0 mm proud, shims (0.4, 0.6, 0.8, 1.0, 2.0, 3.0), min gap 0.30 mm, screw about M3x20"
+  },
+  {
+   "name": "each tab overlaps the panel corner (panel 22.0 mm)",
+   "ok": true,
+   "detail": "73 mm2 per tab"
+  },
+  {
+   "name": "shims stay off the panel",
+   "ok": true,
+   "detail": "no overlap with panel footprint"
+  },
+  {
+   "name": "tab screw hole does not break the front face",
+   "ok": true,
+   "detail": "3.6 mm left in front"
+  },
+  {
+   "name": "plastic between tab screw hole and pocket corner",
+   "ok": true,
+   "detail": "2.19 mm"
+  },
+  {
+   "name": "wall left behind the screw-head relief",
+   "ok": true,
+   "detail": "1.60 mm"
+  },
+  {
+   "name": "plastic round cover screw hole (inside / outside)",
+   "ok": true,
+   "detail": "2.05 / 2.65 mm"
+  },
+  {
+   "name": "cover plate sits on the rim, ribs drop inside",
+   "ok": true,
+   "detail": "z 47.60..52.00 (rim at 49.6)"
+  },
+  {
+   "name": "cover covers the whole rim",
+   "ok": true,
+   "detail": "cover underside 41816 mm2 vs rim 2099 mm2"
+  },
+  {
+   "name": "cover ribs clear the walls sideways",
+   "ok": true,
+   "detail": "min gap 0.30 mm"
+  },
+  {
+   "name": "cover does not intersect the frame",
+   "ok": true,
+   "detail": "-0.0000 mm3"
+  },
+  {
+   "name": "cover holes line up with the frame bosses",
+   "ok": true,
+   "detail": "a 2.4 mm pin passes through cover and into each boss hole"
+  },
+  {
+   "name": "cover screw head stays on the plate",
+   "ok": true,
+   "detail": "hole is 4.0 mm from the edge"
+  },
+  {
+   "name": "room behind keyhole x=-50 for a wall screw head",
+   "ok": true,
+   "detail": "4 mm clear inside"
+  },
+  {
+   "name": "room behind keyhole x=+0 for a wall screw head",
+   "ok": true,
+   "detail": "4 mm clear inside"
+  },
+  {
+   "name": "room behind keyhole x=+50 for a wall screw head",
+   "ok": true,
+   "detail": "4 mm clear inside"
+  },
+  {
+   "name": "5 mm power cable passes through the notch",
+   "ok": true,
+   "detail": "notch 6.5 x 7.5 mm"
+  },
+  {
+   "name": "rail does not intersect the frame",
+   "ok": true,
+   "detail": "0.0000 mm3"
+  },
+  {
+   "name": "rail clears the frame walls",
+   "ok": true,
+   "detail": "min gap 0.30 mm"
+  },
+  {
+   "name": "rail end holes line up with the bottom corner screw holes",
+   "ok": true,
+   "detail": "2.4 mm pin passes"
+  },
+  {
+   "name": "rail clears the top tabs",
+   "ok": true,
+   "detail": "no overlap"
+  },
+  {
+   "name": "rail has tie holes either side of the ESP32 opening",
+   "ok": true,
+   "detail": "87 tie holes, opening 60 x 20 mm"
+  },
+  {
+   "name": "height above the rail deck for the ESP32 + plugged jumpers (needs ~26 mm)",
+   "ok": true,
+   "detail": "30.1 mm"
+  },
+  {
+   "name": "frame + cover drops into the foot slot",
+   "ok": true,
+   "detail": "slot 52.8 mm for a 52.0 mm deep frame"
+  },
+  {
+   "name": "stable on the feet (centre of mass well inside the footprint)",
+   "ok": true,
+   "detail": "centre of mass at 48 mm along a 101 mm foot"
+  },
+  {
+   "name": "foot front lip stays below the LEDs",
+   "ok": true,
+   "detail": "lip 5.0 mm vs 8.6 mm border"
+  },
+  {
+   "name": "cable clearance under the frame on feet",
+   "ok": true,
+   "detail": "8.0 mm"
+  }
+ ],
+ "parts": {
+  "01_fit_test_ring": {
+   "size_mm": [
+    207.6,
+    207.6,
+    3.6
+   ],
+   "volume_cm3": 22.25,
+   "triangles": 448,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "02_fit_test_corner": {
+   "size_mm": [
+    32.0,
+    32.0,
+    21.6
+   ],
+   "volume_cm3": 6.77,
+   "triangles": 542,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "03_frame": {
+   "size_mm": [
+    207.6,
+    207.6,
+    49.6
+   ],
+   "volume_cm3": 157.7,
+   "triangles": 2932,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "04_back_cover": {
+   "size_mm": [
+    207.6,
+    207.6,
+    4.4
+   ],
+   "volume_cm3": 101.29,
+   "triangles": 5100,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "05_tabs_and_shims_plate": {
+   "size_mm": [
+    71.5,
+    128.5,
+    3.0
+   ],
+   "volume_cm3": 4.99,
+   "triangles": 10848,
+   "bodies": 28,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "06_electronics_rail": {
+   "size_mm": [
+    203.8,
+    55.9,
+    3.4
+   ],
+   "volume_cm3": 20.91,
+   "triangles": 9990,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "07_desk_foot_print_2": {
+   "size_mm": [
+    101.08,
+    22.61,
+    22.0
+   ],
+   "volume_cm3": 29.29,
+   "triangles": 32,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/corner_tab": {
+   "size_mm": [
+    14.5,
+    14.5,
+    3.0
+   ],
+   "volume_cm3": 0.53,
+   "triangles": 408,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_0.4mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    0.4
+   ],
+   "volume_cm3": 0.04,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_0.6mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    0.6
+   ],
+   "volume_cm3": 0.05,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_0.8mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    0.8
+   ],
+   "volume_cm3": 0.07,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_1.0mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    1.0
+   ],
+   "volume_cm3": 0.09,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_2.0mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    2.0
+   ],
+   "volume_cm3": 0.18,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  },
+  "singles/shim_3.0mm": {
+   "size_mm": [
+    14.5,
+    14.5,
+    3.0
+   ],
+   "volume_cm3": 0.27,
+   "triangles": 384,
+   "bodies": 1,
+   "status": "Error.NoError",
+   "overhang_mm2": 0.0,
+   "fits_bed": true
+  }
+ },
+ "ok": true,
+ "derived": {
+  "pocket": 192.8,
+  "outer": 207.6,
+  "Z1": 13.6,
+  "Z2": 49.6,
+  "depth_assembled": 52.0,
+  "hx": 98.9,
+  "xb": 99.8
+ }
+}

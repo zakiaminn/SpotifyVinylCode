@@ -1,0 +1,11 @@
+# build output
+.pio/
+
+# private: anything that should never be pushed
+include/secrets.h
+
+# local tooling
+enclosure/.venv/
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+.DS_Store

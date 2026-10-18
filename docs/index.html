@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- lock the page down: no outside scripts/styles/images, and it can only talk to Spotify -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src https://accounts.spotify.com https://api.spotify.com; form-action 'none'; base-uri 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Link Spotify</title>
+<style>
+  :root {
+    --bg: #f4f1ec; --card: #ffffff; --text: #1d1b19; --muted: #6b655e;
+    --accent: #1db954; --accent-text: #08210f; --border: #e3ddd4; --code: #f7f4ef;
+    --danger: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121110; --card: #1c1a18; --text: #f2eee8; --muted: #a39b90;
+      --accent: #1ed760; --accent-text: #08210f; --border: #2e2a26; --code: #151311;
+      --danger: #f2948d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; background: var(--bg); color: var(--text);
+    font: 16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; align-items: center; justify-content: center; padding: 24px 16px;
+  }
+  main {
+    width: 100%; max-width: 440px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 32px 24px;
+  }
+  .record {
+    width: 72px; height: 72px; border-radius: 50%; margin: 0 auto 20px;
+    background: radial-gradient(circle, var(--accent) 0 14%, #111 15% 22%, #2a2a2a 23% 24%,
+                #111 25% 40%, #2a2a2a 41% 42%, #111 43% 60%, #2a2a2a 61% 62%, #111 63%);
+  }
+  h1 { font-size: 24px; margin: 0 0 8px; text-align: center; }
+  p { margin: 0 0 16px; color: var(--muted); }
+  .center { text-align: center; }
+  button {
+    width: 100%; border: 0; border-radius: 999px; padding: 14px 20px; cursor: pointer;
+    background: var(--accent); color: var(--accent-text); font: 600 16px/1 inherit;
+  }
+  button:disabled { opacity: .6; cursor: default; }
+  textarea {
+    width: 100%; height: 96px; resize: none; margin: 0 0 12px; padding: 12px;
+    border: 1px solid var(--border); border-radius: 12px; background: var(--code);
+    color: var(--text); font: 13px/1.4 ui-monospace, Menlo, monospace; word-break: break-all;
+  }
+  ol { margin: 20px 0 0; padding-left: 20px; color: var(--muted); }
+  ol li { margin-bottom: 8px; }
+  strong { color: var(--text); }
+  .error { color: var(--danger); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="record" aria-hidden="true"></div>
+
+  <section id="start">
+    <h1>Link your Spotify</h1>
+    <p class="center">This lets the vinyl display see what you're playing. It can only read what's playing, it can't change anything or see your password.</p>
+    <button id="link">Link Spotify</button>
+  </section>
+
+  <section id="working" hidden>
+    <h1>Linking...</h1>
+    <p class="center">One sec.</p>
+  </section>
+
+  <section id="done" hidden>
+    <h1>Linked</h1>
+    <p class="center" id="who"></p>
+    <textarea id="token" readonly aria-label="Link code"></textarea>
+    <button id="copy">Copy link code</button>
+    <ol>
+      <li>Copy the code above (or send it to whoever is setting up your display).</li>
+      <li>Hold the button on the display for 3 seconds until it says <strong>Join WiFi Vinyl-Setup</strong>.</li>
+      <li>On your phone, join the WiFi network <strong>Vinyl-Setup</strong>. A setup page opens.</li>
+      <li>Tap <strong>Setup</strong>, paste the code into <strong>Spotify link code</strong>, tap <strong>Save</strong>, then <strong>Exit</strong>.</li>
+    </ol>
+  </section>
+
+  <section id="failed" hidden>
+    <h1>That didn't work</h1>
+    <p class="center error" id="reason"></p>
+    <button id="retry">Try again</button>
+  </section>
+</main>
+
+<script>
+  // Spotify app client ID. Not a secret, PKCE is built for public pages like this one.
+  const CLIENT_ID = "ea42533c82864b1992cdfe6b1fc25460";
+  const SCOPE = "user-read-currently-playing user-read-playback-state";
+  // must exactly match a Redirect URI in the Spotify dashboard
+  const REDIRECT_URI = location.origin + location.pathname.replace(/index\.html$/, "");
+
+  const $ = (id) => document.getElementById(id);
+  function show(id) {
+    for (const s of ["start", "working", "done", "failed"]) $(s).hidden = s !== id;
+  }
+  function fail(msg) { $("reason").textContent = msg; show("failed"); }
+
+  function base64url(bytes) {
+    return btoa(String.fromCharCode(...new Uint8Array(bytes)))
+      .replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+
+  async function startLink() {
+    const verifier = base64url(crypto.getRandomValues(new Uint8Array(48)));
+    const challenge = base64url(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(verifier)));
+    sessionStorage.setItem("pkce_verifier", verifier);
+    location.href = "https://accounts.spotify.com/authorize?" + new URLSearchParams({
+      client_id: CLIENT_ID,
+      response_type: "code",
+      redirect_uri: REDIRECT_URI,
+      scope: SCOPE,
+      code_challenge_method: "S256",
+      code_challenge: challenge,
+      show_dialog: "true",   // always ask, so you can see which account you're linking
+    });
+  }
+
+  async function finishLink(code) {
+    show("working");
+    const verifier = sessionStorage.getItem("pkce_verifier");
+    sessionStorage.removeItem("pkce_verifier");
+    if (!verifier) return fail("This link expired. Tap try again to start over.");
+
+    const res = await fetch("https://accounts.spotify.com/api/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        grant_type: "authorization_code",
+        code,
+        redirect_uri: REDIRECT_URI,
+        client_id: CLIENT_ID,
+        code_verifier: verifier,
+      }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.refresh_token) {
+      return fail("Spotify said: " + (data.error_description || data.error || res.status));
+    }
+
+    // only used to show whose account got linked. the token itself is never refreshed here,
+    // that's the display's job
+    try {
+      const me = await fetch("https://api.spotify.com/v1/me", {
+        headers: { Authorization: "Bearer " + data.access_token },
+      }).then((r) => r.json());
+      if (me.display_name || me.id) $("who").textContent = "Linked as " + (me.display_name || me.id) + ".";
+    } catch (e) {}
+
+    $("token").value = data.refresh_token;
+    show("done");
+  }
+
+  $("link").onclick = startLink;
+  $("retry").onclick = () => show("start");
+  $("copy").onclick = async () => {
+    try { await navigator.clipboard.writeText($("token").value); }
+    catch (e) { $("token").select(); document.execCommand("copy"); }
+    $("copy").textContent = "Copied";
+    setTimeout(() => ($("copy").textContent = "Copy link code"), 2000);
+  };
+
+  const params = new URLSearchParams(location.search);
+  history.replaceState(null, "", REDIRECT_URI);   // keep the one-time code out of the address bar
+  if (params.get("code")) finishLink(params.get("code"));
+  else if (params.get("error")) fail(params.get("error") === "access_denied"
+    ? "You tapped Cancel on Spotify's page. Tap try again if you meant to agree."
+    : "Spotify said: " + params.get("error"));
+</script>
+</body>
+</html>
